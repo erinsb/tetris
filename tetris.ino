@@ -11,6 +11,11 @@
 #define C   A2
 #define D   A3
 
+#define STARTX  12
+#define STARTY  10
+#define LENGTH  10
+#define WIDTH   11
+
 int shape1[4][4] = {{1,1,0,0}, {1,1,0,0}}; //square
 int shape2[4][4] = {{1,1,1,1}}; //I shape
 int shape3[4][4] = {{1},{1},{1},{0,1}}; //L
@@ -30,8 +35,8 @@ class Shape {
     void drop();
     void rotate();
 
-    int startX = 0;
-    int startY = 0;
+    int startX = STARTX;
+    int startY = STARTY;
 
   private:
     int shapeMatrix[4][4];
@@ -48,7 +53,7 @@ Shape::Shape(int shape[4][4]){
   for(int i=0; i<4; i++) {
     for(int j=0; j<4; j++) {
       if(shapeMatrix[i][j] == 1) {
-        matrix.drawPixel(i, j, matrix.Color333(7, 0, 3));
+        matrix.drawPixel(i + startX, j + startY, matrix.Color333(7, 0, 3));
       }
     }
   };
@@ -58,9 +63,9 @@ Shape::Shape(int shape[4][4]){
 void Shape::draw() {
   
     for(int i=0; i<4; i++) {
-    for(int j=0; j<4; j++) {
-      if(shapeMatrix[i][j] == 1) {
-        matrix.drawPixel(i + startX, j + startY, matrix.Color333(7, 0, 3));
+      for(int j=0; j<4; j++) {
+        if(shapeMatrix[i][j] == 1) {
+          matrix.drawPixel(i + startX, j + startY, matrix.Color333(7, 0, 3));
       }
     }
   }; 
@@ -71,7 +76,7 @@ void Shape::drop() {
   for(int i=0; i<4; i++) {
     for(int j=0; j<4; j++) {
       if(shapeMatrix[i][j] == 1) {
-        matrix.drawPixel(i, j + startY, matrix.Color333(0, 0, 0));
+        matrix.drawPixel(i + startX, j + startY, matrix.Color333(0, 0, 0));
       }
     }
   }
@@ -130,38 +135,49 @@ void Shape::rotate() {
 class Board {
 
   public:
-    static const int x = 32;
-    static const int y = 32;
-    int board[x][y];
+    //static const int x = 11;
+    //static const int y = 20;
+    //int gameBoard[x][y];
     Board();
+
+    void draw();
+
+    int x = WIDTH;
+    int y = LENGTH;
+    
+  private:
+    int startX = STARTX;
+    int startY = STARTY;
+
+//  int x = WIDTH;
+//  int y = LENGTH;
+    int gameBoard[WIDTH][LENGTH] = {};
 };
 
-Board::Board() {
-  for (int i=0; i<x; i++) {
-    for (int j=0; j<y; j++) {
-      board[i][j] = 0;
-    }
-  }
+Board::Board() {};
+
+void Board::draw() {
+  matrix.drawLine(startX,startY,startX+x,startY, matrix.Color333(7, 7, 7));
+  matrix.drawLine(startX-1+x,startY-1,startX+x,startY-1+y, matrix.Color333(7, 7, 7));
 };
 
 
-Shape shapeTest(shape4);
+//Shape shapeTest(shape4);
+Shape *shapeTest  = new Shape(shape3);
+Board game;
+//int gameBoard[WIDTH][LENGTH];
+
 
 void setup() {
 
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   matrix.begin();
-  
-  // draw a pixel in solid white
-  //matrix.drawPixel(0, 0, matrix.Color333(7, 7, 7)); 
-  //delay(500);
+  //Serial.println("HERE");
 
-  // fix the screen with green
-  //matrix.fillRect(0, 0, 4, 4, matrix.Color333(0, 7, 0));
-  //Shape shapeTest(shape4);
+  game.draw();
 
-  //shapeTest.drop();
+  shapeTest->draw();
 
   
   //delay(1000);
@@ -175,8 +191,6 @@ void setup() {
 
 }
 
-int y = 0;
-
 
 //int array shapes = [shape1, shape2, shape3, shape4];
 
@@ -186,9 +200,9 @@ void loop() {
   delay(500);
   //Serial.println("HERE");
  
-  shapeTest.rotate();
-  shapeTest.drop();
-  shapeTest.draw();
+  shapeTest->rotate();
+  shapeTest->drop();
+  shapeTest->draw();
 
 
 
