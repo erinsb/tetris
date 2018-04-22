@@ -56,8 +56,14 @@ Shape::Shape(int shape[4][4]){
 };
 
 void Shape::draw() {
-
- 
+  
+    for(int i=0; i<4; i++) {
+    for(int j=0; j<4; j++) {
+      if(shapeMatrix[i][j] == 1) {
+        matrix.drawPixel(i + startX, j + startY, matrix.Color333(7, 0, 3));
+      }
+    }
+  }; 
 }
 
 void Shape::drop() {
@@ -73,13 +79,13 @@ void Shape::drop() {
   delay(50);
   startY++;
   
-   for(int i=0; i<4; i++) {
-    for(int j=0; j<4; j++) {
-      if(shapeMatrix[i][j] == 1) {
-        matrix.drawPixel(i, j + startY, matrix.Color333(7, 0, 3));
-      }
-    }
-  }
+//   for(int i=0; i<4; i++) {
+//    for(int j=0; j<4; j++) {
+//      if(shapeMatrix[i][j] == 1) {
+//        matrix.drawPixel(i, j + startY, matrix.Color333(7, 0, 3));
+//      }
+//    }
+//  }
 };
 
 void Shape::rotate() {
@@ -110,13 +116,13 @@ void Shape::rotate() {
     }
   };
 
-  for(int i=0; i<4; i++) {
-    for(int j=0; j<4; j++) {
-      if(shapeMatrix[i][j] == 1) {
-        matrix.drawPixel(i, j, matrix.Color333(7, 0, 3));
-      }
-    }
-  };
+//  for(int i=0; i<4; i++) {
+//    for(int j=0; j<4; j++) {
+//      if(shapeMatrix[i][j] == 1) {
+//        matrix.drawPixel(i, j, matrix.Color333(7, 0, 3));
+//      }
+//    }
+//  };
   
 }
 
@@ -177,10 +183,12 @@ int y = 0;
 
 void loop() {
   // put your main code here, to run repeatedly:
-  delay(1000);
+  delay(500);
   //Serial.println("HERE");
  
   shapeTest.rotate();
+  shapeTest.drop();
+  shapeTest.draw();
 
 
 
